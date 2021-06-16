@@ -2,7 +2,7 @@
 
 # What is it?
 
-Are you an adult who just started learning classical music? Do you find it difficult to read sheet music? Do you find it even harder to read sheet music, while at the same time trying to figure out where to move your hands and fingers to play the right notes? If so, this is for you.
+Are you an adult who just started learning classical music? Do you find it hard to read sheet music? Do you find it even harder to read sheet music, while at the same time trying to figure out where to move your hands and fingers to play the right notes? If so, this is for you.
 
 Simply open the **index.html** file in your browser and it will generate a page of random sheet music. Take a print-out of this page and practise with it. It will improve your sight reading skills significantly over time. This is because, random notes (unlike musical passages) force your eyes to pick up every note, since there is no discernible pattern to them.
 
