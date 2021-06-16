@@ -15,3 +15,7 @@ I wrote this tool for someone who was just starting to learn classical music and
 # Improvements
 
 You can get creative and add any number of ideas to this tool. For exacmple, you could provide options to generate random notes obeying a specific key signature or time signature. You can even specify the range of notes, which is a way to specify the "difficulty level". Using these (and many more) ideas, you can generate an entire *book* of random sheet music, with progressively increasing difficulty.
+
+# Contact
+
+Send feedback or suggestions to kkarthik100@gmail.com
