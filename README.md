@@ -10,8 +10,8 @@ Children, in particular, can hugely improve their sight reading abilities using 
 
 # Technicals
 
-I wrote this tool for someone who was just starting to learn classical music and was struggling with reading sheet music. This was written prior to ES6, so it lacks many of the bells and whistles of "modern" JS (I did change some of the *var* keywords to *let* though). You are free to modernize the code to your heart's content. The Javascript code appears inline within the **index.html** file itself. I didn't bother pulling the JS into its own separate file, as it is not too much of code.
+I wrote this tool for someone who was just starting to learn classical music and was struggling with reading sheet music. This was written around 2015 or so, around the time that ES6 just came out, so it lacks many of the bells and whistles of "modern" JS (I did change some of the *var* keywords to *let* though). You are free to modernize the code to your heart's content. The Javascript code appears inline within the **index.html** file itself. I didn't bother pulling the JS into its own separate file, as it is not too much of code.
 
 # Improvements
 
-You can get creative and add any number of ideas to this tool. For exacmple, you could provide options to generate random notes obeying a specific key signature or time signature. You can even specify the range of notes, which is a way to specify the "difficulty level". Using these (and many more) ideas, you can generate an entire book of random sheet music, with progressively increasing difficulty.
+You can get creative and add any number of ideas to this tool. For exacmple, you could provide options to generate random notes obeying a specific key signature or time signature. You can even specify the range of notes, which is a way to specify the "difficulty level". Using these (and many more) ideas, you can generate an entire *book* of random sheet music, with progressively increasing difficulty.
