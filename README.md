@@ -1,3 +1,12 @@
-Learning western classical music is hard. In fact, learning any classical music is hard, particularly for adults. One of the biggest stumbling blocks is reading sheet music, also called sight reading. When we read a sentence in English, our eyes do not actually pick up every single letter. Our brain instead predicts what the word is from context. A similar phenomenon occurs when playing an instrument, while reading sheet music. Music generally has ascending / descending patterns, which the ear and brain use as cues to predict where the fingers should move to next.
+# Sheet music generator
 
-An unfortunate 
+# What is this?
+
+Are you an adult who just started learning classical music? Do you find it difficult to read sheet music? Do you find it even harder to read sheet music and at the same time move your hands and fingers to play the right notes? If so, this is for you.
+
+Simply load the **index.html** in your browser and it will generate a full sheet of random notes. Take a printout of this page and practise with it. It will improve your sight reading skills, as random notes (unlike musical passss) force your eyes to pick up every note, since there is no pattern to them.
+
+Even children can hugely improve their sight reading abilities using this tool.
+
+# Technicals
+
