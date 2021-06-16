@@ -8,6 +8,10 @@ Simply open the **index.html** file in your browser and it will generate a page 
 
 Children, in particular, can hugely improve their sight reading abilities using this tool.
 
+# Try it out
+
+https://kkarthik100.github.io/sheet_music_generator/
+
 # Technicals
 
 I wrote this tool for someone who was just starting to learn classical music and was struggling with reading sheet music. This was written around 2015 or so, around the time that ES6 just came out, so it lacks many of the bells and whistles of "modern" JS (I did change some of the *var* keywords to *let* though). You are free to modernize the code to your heart's content. The Javascript code appears inline within the **index.html** file itself. I didn't bother pulling the JS into its own separate file, as it is not too much of code.
