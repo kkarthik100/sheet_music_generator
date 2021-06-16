@@ -1,0 +1,281 @@
+<html>
+<head>
+  <style>
+    body {
+      -moz-user-select: none;
+      /*
+        Chrome / FF does not print background images by default. See:
+        https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-print-color-adjust
+      */
+      -webkit-print-color-adjust: exact;
+    }
+
+    .title {
+      position: absolute;
+      margin: 0px;
+      padding: 0px;
+      color: #222222;
+      font: bold 25px arial,sans-serif;
+      text-align: center;
+      width: 800px;
+      height: 30px;
+      top: 5px;
+    }
+
+    .subtitle {
+      font: bold 15px arial,sans-serif;
+      height: 20px;
+      top: 35px;
+    }
+
+    .sheet {
+      position: absolute;
+      background: url('sheet.png') no-repeat;
+      background-size: 800px 1120px;
+      width: 800px;
+      height: 1120px;
+      left: 0px;
+      top: 0px;
+    }
+
+    .line-across-note {
+      position: absolute;
+      background: url('line_across_note.gif') no-repeat;
+      background-size: 17px 2px;
+      width: 17px;
+      height: 2px;
+    }
+/*
+    .note {
+      position: absolute;
+      background-size: 10px 31px;
+      width: 10px;
+      height: 31px;
+    }
+*/
+
+    .whole {
+      position: absolute;
+      background: url('whole_note.png') no-repeat;
+      background-size: 15px 15px;
+      width: 15px;
+      height: 15px;
+    }
+    .whole-flipped {
+      position: absolute;
+      background: url('whole_note_flipped.png') no-repeat;
+      background-size: 15px 15px;
+      width: 15px;
+      height: 15px;
+    }
+
+    .half {
+      position: absolute;
+      background: url('half_note.png') no-repeat;
+      background-size: 10px 32px;
+      width: 10px;
+      height: 32px;
+    }
+    .half-flipped {
+      position: absolute;
+      background: url('half_note_flipped.png') no-repeat;
+      background-size: 10px 32px;
+      width: 10px;
+      height: 32px;
+    }
+
+    .quarter {
+      position: absolute;
+      background: url('quarter_note.png') no-repeat;
+      background-size: 10px 32px;
+      width: 10px;
+      height: 32px;
+    }
+    .quarter-flipped {
+      position: absolute;
+      background: url('quarter_note_flipped.png') no-repeat;
+      background-size: 10px 32px;
+      width: 10px;
+      height: 32px;
+    }
+
+    .eighth {
+      position: absolute;
+      background: url('eighth_note.png') no-repeat;
+      background-size: 10px 31px;
+      width: 15px;
+      height: 31px;
+    }
+    .eighth-flipped {
+      position: absolute;
+      background: url('eighth_note_flipped.png') no-repeat;
+      background-size: 10px 31px;
+      width: 15px;
+      height: 31px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="sheet" class="sheet"></div>
+  <div class="title">Sight reading practice sheet</div>
+  <div class="title subtitle">(refresh the page for a new one)</div>
+
+  <script type='text/javascript'>
+    const NUM_LINES = 6;
+    const NUM_MEASURES_PER_LINE = 4;
+    const SPACE_WIDTH = 8;
+
+    // How many time units there are in each measure.
+    const TOTAL_TIME_UNITS = 32;
+
+    // Only these kinds of durations will appear on the page.
+    // 0 = whole note, 1 = half, 2 = quarter, etc.
+    // The number of time units occupied by each note is:
+    // TOTAL_TIME_UNITS / (2 ^ note)
+    // So, a quarter note takes up 16 / (2 ^ 2) = 4 time units, which makes
+    // sense, because it implies 4 quarter notes in the measure.
+    const NOTE_DURATIONS = [1, 2];
+
+    numTimeUnits = function(noteDuration) {
+      return TOTAL_TIME_UNITS / Math.pow(2, noteDuration);
+    };
+
+    // Generates a measure's worth of notes. Each note is unique and it's
+    // duration is one of the values in NOTE_DURATIONS.
+    generateMeasure = function() {
+      // 5 kinds of notes (say C, D, E, F and G). It does not matter which
+      // five here. That fact matters only when drawing the notes.
+      let notesRemaining = [0, 1, 2, 3, 4];
+      let noteDurationsRemaining = NOTE_DURATIONS.slice();
+      let timeUnitsRemaining = TOTAL_TIME_UNITS;
+      let measure = [];
+
+      while (timeUnitsRemaining > 0) {
+        let randomIndex = Math.round(Math.random() * (notesRemaining.length - 1))
+        let randomDurationIndex = Math.round(
+            Math.random() * (noteDurationsRemaining.length - 1))
+        let randomDuration = noteDurationsRemaining[randomDurationIndex];
+        timeUnitsRemaining -= numTimeUnits(randomDuration);
+        if (timeUnitsRemaining < numTimeUnits(noteDurationsRemaining[0])) {
+          // The longest duration available (index 0) cannot be applied anymore
+          // in this measure (as we do not have enough time units left). So,
+          // remove it.
+          noteDurationsRemaining.splice(0, 1);
+        }
+        measure.push([randomIndex, randomDuration]);
+      }
+
+      return measure;
+    };
+
+    generatePage = function() {
+      let page = [];
+      for (var i = 0; i < NUM_LINES; ++i) {
+        let line = [];
+        page.push(line);
+        for (var j = 0; j < NUM_MEASURES_PER_LINE; ++j) {
+          line.push(generateMeasure());
+        }
+      }
+      return page;
+    };
+
+    drawNote = function(x, y, noteDuration, isFlipped, yPosOfHighA) {
+      let note = document.createElement('div');
+      let cssClass = '';
+      let shouldOffset = true;
+      if (noteDuration == 0) {
+        cssClass += (isFlipped ? 'whole-flipped' : 'whole');
+        shouldOffset = false;
+      } else if (noteDuration == 1) {
+        cssClass += (isFlipped ? 'half-flipped' : 'half');
+      } else if (noteDuration == 2) {
+        cssClass += (isFlipped ? 'quarter-flipped' : 'quarter');
+      } else if (noteDuration == 3) {
+        cssClass += (isFlipped ? 'eighth-flipped' : 'eighth');
+      }
+//      cssClass += ' note';
+      note.className = cssClass;
+      note.style.left = x;
+      let top = (isFlipped && shouldOffset ? y + 23 : y);
+      note.style.top = (noteDuration == 0 ? top + 20 : top);
+      document.getElementById('sheet').appendChild(note);
+
+      // Draw extra ledger lines on the note, if needed.
+      if (y > yPosOfHighA) return;
+      for (var i = yPosOfHighA; i >= y; i -= SPACE_WIDTH) {
+        let lineAcrossNote = document.createElement('div');
+        lineAcrossNote.className = 'line-across-note';
+        lineAcrossNote.style.left = x - 3;
+        lineAcrossNote.style.top = i + 26;
+        document.getElementById('sheet').appendChild(lineAcrossNote);
+      }
+    };
+
+    // tonicOffset - The y position of the top / left of the starting (tonic)
+    //               note in the sequence. This y posision is an offset from
+    //               the first line. So, a value of 0 denotes an F.
+    //               This number has to be a multiple of SPACE_WIDTH / 2.
+    drawPage = function(page, startY, tonicOffset) {
+      const LINE_OFFSET = [162, 161, 162, 161, 161];
+      const LINE_WIDTH = 660;
+      const WIDTH_PER_TIME_UNIT = Math.round(
+          LINE_WIDTH / (TOTAL_TIME_UNITS * NUM_MEASURES_PER_LINE));
+      const X_START = 100;
+
+      let yOffset = startY;
+      for (var i = 0; i < page.length; ++i) {
+        let line = page[i];
+        // For each line, we need to know the Y coordinate of the B note. Notes
+        // above this line are drawn flipped ("up and to the right").
+        let yPosOfB = yOffset - 3 * SPACE_WIDTH / 2;
+        let yPosOfHighA = yOffset - 9 * SPACE_WIDTH / 2;
+
+        for (var j = 0; j < line.length; ++j) {
+          let measure = line[j];
+          let x = X_START + j * (LINE_WIDTH / NUM_MEASURES_PER_LINE);
+          for (var k = 0; k < measure.length; ++k) {
+            let note = measure[k];
+            y = yOffset + tonicOffset - ((note[0] - 0) * SPACE_WIDTH / 2);
+            drawNote(x, y, note[1], y <= yPosOfB, yPosOfHighA);
+            x += WIDTH_PER_TIME_UNIT * numTimeUnits(note[1]);
+          }
+        }
+        yOffset += LINE_OFFSET[i];
+      }
+    };
+
+    logPage = function(page) {
+      for (var line = 0; line < page.length; ++line) {
+        let measureArr = [];
+        for (var measure = 0; measure < page[line].length; ++measure) {
+          let notesStr = '';
+          for (var note = 0; note < page[line][measure].length; ++note) {
+            if (note > 0) notesStr += " ";
+            notesStr += page[line][measure][note][0];
+            let duration = page[line][measure][note][1];
+            if (duration == 0) notesStr += "F";
+            else if (duration == 1) notesStr += "H";
+            else if (duration == 2) notesStr += "Q";
+            else if (duration == 3) notesStr += "E";
+          }
+          measureArr.push(notesStr);
+        }
+        console.log(measureArr.join(', '));
+      }
+    };
+
+    console.log("Treble clef");
+    let page = generatePage();
+    logPage(page);
+    drawPage(page, 90, -4 * 7);
+
+    console.log("Bass clef");
+    page = generatePage();
+    logPage(page);
+    drawPage(page, 157, -4 * 0);
+  </script>
+</body>
+</html>
+
